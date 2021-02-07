@@ -1,6 +1,12 @@
 # Learning Python
 Learning Python for Windows with Jupyter Notebooks
 
+## Prerequisites
+
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Python extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
+- [Python 3](https://www.python.org/downloads/)
+
 ## Python
 
 [Python](https://www.python.org/)
@@ -26,3 +32,5 @@ Tim Goldens [WMI v1.4.9 documentation](http://timgolden.me.uk/python/wmi/tutoria
 ## Jupyter
 
 [Jupyter Notebook](https://jupyter.org/)
+
+[Working with Jupyter Notebooks in Visual Studio Code](https://code.visualstudio.com/docs/python/jupyter-support)
