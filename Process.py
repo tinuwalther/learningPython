@@ -22,6 +22,7 @@ collection = ['sbb.ch','crazy.domain.io']
 for item in collection:
     print('digtest', item)
     digtest = do.dig(item)
+    print(digtest)
     if(digtest['Succeeded'] == True):
         tping = do.tping(digtest['Resolved'], 443, 100) 
         print(G+ "TCP Port Test: " + digtest['Input'] + " -> " + digtest['Resolved']  + " -> " + str(tping['Succeeded']) +W)
