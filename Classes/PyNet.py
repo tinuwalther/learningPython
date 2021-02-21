@@ -116,9 +116,10 @@ for item in collection:
     print('digtest', item)
     digtest = do.digtest(item)
     if(digtest['Succeeded'] == True):
-        tping = do.tping(item, 443, 100) 
+        tping = do.tping(digtest['Resolved'], 443, 100) 
+        print(G+ "TCP Port Test: " + digtest['Input'] + " -> " + digtest['Resolved']  + " -> " + str(tping['Succeeded']) +W)
         json_object = json.dumps(tping, indent = 4)
         print(json_object)
     else:
-        print(Y+'WARNING:' + digtest['Resolved']+W)
+        print(Y+ "TCP Port Test: " + digtest['Resolved'] +W)
 
