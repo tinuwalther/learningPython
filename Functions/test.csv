@@ -1,0 +1,4 @@
+VMName;Hostname;Blueprint;IpV4Address
+TINU0052012;TINU0052012.tinu-005.domain.com;Managed Windows 2012;100.98.168.5
+TINU0052016;TINU0052016.tinu-005.domain.com;Managed Windows 2016;100.98.168.6
+TINU0052019;TINU0052019.tinu-005.domain.com;Managed Windows 2019;100.98.168.9
