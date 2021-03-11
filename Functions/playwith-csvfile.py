@@ -69,7 +69,7 @@ def import_csv(file):
 
 
 def get_csvrow(file,filter):
-    '''Import-CSV and do something with one row'''
+    '''Import-CSV and get the row'''
     import csv, sys
     with open(file, mode='r') as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=';')
@@ -77,9 +77,8 @@ def get_csvrow(file,filter):
             for row in csv_reader:
                 VMName = row["VMName"]
                 if(VMName == filter):
-                    print(row["Hostname"], row["IpV4Address"])
-                    
-                    #print(row)
+                    return(row["Hostname"], row["IpV4Address"])
+
         except csv.Error as e:
             sys.exit('file {}, line {}: {}'.format(file, csv_reader.line_num, e))
 
@@ -98,7 +97,7 @@ def convertto_json(object):
 
 #region process
 import os
-get_current_location = os.getcwd()
+get_current_location = os.path.dirname(__file__)
 
 csv_file  = get_current_location + '/test.csv'
 if(test_path(csv_file) == True):
@@ -109,8 +108,8 @@ if(test_path(csv_file) == True):
     print(colors.fg.blue + 'JavaScript Object Notation (JSON):' + colors.reset)
     convertto_json(csvobject)
 
-    print(colors.fg.blue + 'Import-CSV and do something with one row:' + colors.reset)
-    get_csvrow(csv_file,'SBB')
+    print(colors.fg.blue + 'Import-CSV and return one row:' + colors.reset)
+    print(get_csvrow(csv_file,'SBB'))
 else:
     print(f'File not found: {csv_file}')
 
