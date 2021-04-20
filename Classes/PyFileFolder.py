@@ -81,7 +81,6 @@ class pyFileFolder:
             }
             file_object.append(file_dict)
 
-        file_object
         return file_object
 
 
@@ -102,7 +101,6 @@ class pyFileFolder:
                 }
                 file_object.append(file_dict)
 
-        file_object
         return file_object
 
 
@@ -138,7 +136,7 @@ def main(dirpath):
     # Get sorted file list
     filelist = dir.get_sorted_list_of_files("/Users/Tinu/Temp/", '*.*')
     for file in filelist:
-        print(f"{file['LastWriteTime']}, {file['Name']}, {file['FullName']}")
+        print(f"{file['LastWriteTime']}\t{file['Name']}\t{file['FullName']}")
     
     # Get all files greater than 3 days before
     day3before = (datetime.now() - timedelta(days=3))
