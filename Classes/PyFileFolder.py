@@ -104,8 +104,9 @@ def main(dirpath):
     print('{0}{1}{2}'.format(colors.purple, dir.get_latest_file(dirpath, '*'), colors.reset))
 
     filelist = dir.get_list_of_files(dirpath)
-    df = pd.DataFrame(filelist)
-    print('{0}{1}{2}'.format(colors.yellow, df, colors.reset))
+    df  = pd.DataFrame(filelist)
+    out = df.sort_values(by="LastWriteTime", ascending=False)
+    print('{0}{1}{2}'.format(colors.yellow, out, colors.reset))
 
 # Call the main function
 if __name__ =='__main__':
