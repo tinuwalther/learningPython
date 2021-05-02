@@ -150,6 +150,18 @@ class pyFileFolder:
 def main(dirpath):
     '''main function'''
 
+    # Join the path to Downloads
+    from sys import platform
+    if platform == "linux" or platform == "linux2":
+        home_dir = os.environ['HOME']
+    elif platform == "darwin":
+        home_dir = os.environ['HOME']
+    elif platform == "win32":
+        home_dir  = os.environ['USERPROFILE']
+        downloads = os.path.join(home_dir,'downloads')
+    print('{0}Download location{1}'.format(colors.green, colors.reset))
+    print('{0}{1}{2}'.format(colors.purple, downloads, colors.reset))
+
     # Get the current direcory
     print('{0}Current location{1}'.format(colors.green, colors.reset))
     print('{0}{1}{2}'.format(colors.purple, os.getcwd(), colors.reset))
