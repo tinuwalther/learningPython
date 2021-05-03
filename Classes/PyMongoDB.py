@@ -337,8 +337,18 @@ def main():
         home_dir = os.environ['HOME']
     elif sys.platform == "win32":
         home_dir  = os.environ['USERPROFILE']
-        downloads = os.path.join(home_dir,'downloads')
-        
+    downloads = os.path.join(home_dir,'Downloads')
+
+    connectionstring = "mongodb://localhost:27017" 
+    json_file = os.path.join(downloads,'covid19.atlas.json')
+
+    mongo.import_json(json_file, connectionstring, 'JupyterNB', 'Covid19')
+    """
+    credentials = input('user:password')
+    connectionstring = "mongodb+srv://"+credentials+"@cluster0.epl3x.mongodb.net/?retryWrites=true&w=majority"
+    
+    connectionstring = "mongodb://localhost:27017"    
+
     ## Build history from MongoDB
     from datetime import datetime
     import pandas as pd
@@ -359,13 +369,7 @@ def main():
     ## Create a data frame set and print out
     df = pd.DataFrame(result_of_history)
     print(df.tail(7))
-   
-    """
-    credentials = input('user:password')
-    connectionstring = "mongodb+srv://"+credentials+"@cluster0.epl3x.mongodb.net/?retryWrites=true&w=majority"
-    
-    connectionstring = "mongodb://localhost:27017"    
- 
+
     # Print out all methods of the class
     method_list = []
     # attribute is a string representing the attribute name
