@@ -337,8 +337,8 @@ def main():
         home_dir = os.environ['HOME']
     elif sys.platform == "win32":
         home_dir  = os.environ['USERPROFILE']
-        downloads = os.path.join(home_dir,'downloads')
-   
+    downloads = os.path.join(home_dir,'Downloads')
+
     """
     credentials = input('user:password')
     connectionstring = "mongodb+srv://"+credentials+"@cluster0.epl3x.mongodb.net/?retryWrites=true&w=majority"
