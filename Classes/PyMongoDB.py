@@ -340,9 +340,12 @@ def main():
     downloads = os.path.join(home_dir,'Downloads')
 
     connectionstring = "mongodb://localhost:27017" 
-    json_file = os.path.join(downloads,'covid19.atlas.json')
+    json_file = os.path.join(downloads,'JupyterNB.FailedPatching.json')
+    mongo.import_json(json_file, connectionstring, 'JupyterNB', 'FailedPatching')
 
-    mongo.import_json(json_file, connectionstring, 'JupyterNB', 'Covid19')
+    json_file = os.path.join(downloads,'JupyterNB.PoweredOffVMs.json')
+    mongo.import_json(json_file, connectionstring, 'JupyterNB', 'PoweredOffVMs')
+
     """
     credentials = input('user:password')
     connectionstring = "mongodb+srv://"+credentials+"@cluster0.epl3x.mongodb.net/?retryWrites=true&w=majority"
