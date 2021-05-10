@@ -1,6 +1,7 @@
 # <-- general -->
 from re import T
 import pymongo, dns, os, sys, csv, json
+import pandas as pd
 
 from pymongo.message import query
 
@@ -266,7 +267,7 @@ class pyMongoDB:
        
         
     # to test
-    def delete_all_documents(connectionstring, database, collection, query, output = False):
+    def delete_all_documents(self, connectionstring, database, collection, query, output = False):
         """Connect to MongoDB and delete all documents
 
         Args:
@@ -321,8 +322,62 @@ class pyMongoDB:
         mongo_client.drop_database(database)
         
         mongo_client.close()
-        
-        
+
+
+    # Successfully tested
+    def left_join_collection(self, connectionstring, database, left_collection, right_collection):
+        """Performs a left outer join on two collection
+
+        Args:
+            connectionstring (String): Connection-string of the MongoDB
+            database (String): Database name
+            left_collection (String): Collection name
+            right_collection (String): Collection name
+
+        Returns:
+            [Cursor]: 
+        """
+        mongo_client = pymongo.MongoClient(connectionstring)
+        mongo_db     = mongo_client[database]
+        mongo_col    = mongo_db[left_collection]
+
+        # Join with collection
+        stage_lookup = {
+            "$lookup": {
+                "from"         : right_collection,  # the other collection
+                "localField"   : "PSComputerName",  # name of the collection field
+                "foreignField" : "PSComputerName",  # name of the collection field
+                "as"           : "temp_collection", # alias for the new collection
+            }
+	    }
+        # Deconstructs an array field from the input documents
+        stage_unwind = {
+            "$unwind": "$temp_collection"
+        }
+        # define which fields are you want to fetch, 1 = left_collection
+        stage_project = {
+            "$project": {
+                "_id"                  : 1,
+                "PSComputerName"       : 1,
+                "PowerState"           : "$temp_collection.PowerState",
+                "LastPatchRun"         : 1,
+                "LastPatchStatus"      : 1,
+                "UpdateServerStatus"   : 1,
+                "CcmExecVersion"       : 1,
+                "CCMCimInstanceStatus" : 1,
+            } 
+        }
+
+        pipeline = [
+            stage_lookup,
+            #stage_unwind,
+            stage_project,
+	    ]
+        mongo_client.close()
+	
+        return mongo_col.aggregate(pipeline)
+
+
 # Define the main function
 def main():
     """Main function, call the help of each function of the class
@@ -340,16 +395,19 @@ def main():
     downloads = os.path.join(home_dir,'Downloads')
 
     connectionstring = "mongodb://localhost:27017" 
+    df = pd.DataFrame(mongo.left_join_collection(connectionstring, 'JupyterNB', "FailedPatching", "PoweredOffVMs"))
+    print(df)
+
+    """
+    credentials = input('user:password')
+    connectionstring = "mongodb+srv://"+credentials+"@cluster0.epl3x.mongodb.net/?retryWrites=true&w=majority"
+
     json_file = os.path.join(downloads,'JupyterNB.FailedPatching.json')
     mongo.import_json(json_file, connectionstring, 'JupyterNB', 'FailedPatching')
 
     json_file = os.path.join(downloads,'JupyterNB.PoweredOffVMs.json')
     mongo.import_json(json_file, connectionstring, 'JupyterNB', 'PoweredOffVMs')
 
-    """
-    credentials = input('user:password')
-    connectionstring = "mongodb+srv://"+credentials+"@cluster0.epl3x.mongodb.net/?retryWrites=true&w=majority"
-    
     connectionstring = "mongodb://localhost:27017"    
     mongo.drop_collection(connectionstring,'JupyterNB','PatchingHistory')
     mongo.import_json("D:\docker\JupyterNB.PatchingHistory.json",connectionstring,'JupyterNB','PatchingHistory')
