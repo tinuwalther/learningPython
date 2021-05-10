@@ -351,7 +351,9 @@ def main():
     connectionstring = "mongodb+srv://"+credentials+"@cluster0.epl3x.mongodb.net/?retryWrites=true&w=majority"
     
     connectionstring = "mongodb://localhost:27017"    
-
+    mongo.drop_collection(connectionstring,'JupyterNB','PatchingHistory')
+    mongo.import_json("D:\docker\JupyterNB.PatchingHistory.json",connectionstring,'JupyterNB','PatchingHistory')
+ 
     ## Build history from MongoDB
     from datetime import datetime
     import pandas as pd
@@ -372,7 +374,7 @@ def main():
     ## Create a data frame set and print out
     df = pd.DataFrame(result_of_history)
     print(df.tail(7))
-
+    
     # Print out all methods of the class
     method_list = []
     # attribute is a string representing the attribute name
