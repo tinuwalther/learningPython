@@ -187,6 +187,12 @@ class pyMongoDB:
         with open(json_file, 'w') as write_file:
             write_file.write(json_data)
 
+        check_path = os.path.exists(json_file)
+        if(check_path == True):
+            print(f'[INFO] File saved at: {json_file}')
+        else:
+            print(f'[WARN] File not saved: {json_file}')
+
 
     # Successfully tested
     def get_all_documents(self, connectionstring, database, collection):
@@ -394,12 +400,13 @@ def main():
         home_dir  = os.environ['USERPROFILE']
     downloads = os.path.join(home_dir,'Downloads')
 
-    connectionstring = "mongodb://localhost:27017" 
-    df = pd.DataFrame(mongo.left_join_collection(connectionstring, 'JupyterNB', "FailedPatching", "PoweredOffVMs"))
-    print(df)
+    credentials = input('user:password:')
+    connectionstring = "mongodb+srv://"+credentials+"@cluster0.epl3x.mongodb.net/?retryWrites=true&w=majority"
+    json_file = os.path.join(downloads,'Atlas.JupyterNB.Covid19.json')
+    mongo.export_json(json_file,connectionstring,'JupyterNB','Covid19')
 
     """
-    credentials = input('user:password')
+    credentials = input('user:password:')
     connectionstring = "mongodb+srv://"+credentials+"@cluster0.epl3x.mongodb.net/?retryWrites=true&w=majority"
 
     json_file = os.path.join(downloads,'JupyterNB.FailedPatching.json')
