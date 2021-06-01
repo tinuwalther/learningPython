@@ -1,5 +1,5 @@
 #region Classes
-class PyNet:
+class pynet:
 
     '''
 ---------------------------------------------------

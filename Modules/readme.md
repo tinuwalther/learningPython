@@ -29,6 +29,9 @@ import sys
 sys.path.append('D:\DevOps\github.com\learningPython\Modules')
 import PyNetTools
 
+import pymdbc
+pymdbc.get_all_databases('localhost')
+
 # Colors
 W  = '\033[0m'  # white (normal)
 G  = '\033[32m' # green

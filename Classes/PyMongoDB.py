@@ -1,7 +1,5 @@
 # <-- general -->
-from re import T
 import pymongo, dns, os, sys, csv, json
-import pandas as pd
 
 from pymongo.message import query
 
@@ -107,7 +105,7 @@ class pyMongoDB:
             mongo_client.close()
 
         else:
-            print(f'File not found: {csv_file}')
+            print(f'[WARN] File not found: {csv_file}')
     
     
     # Successfully tested
@@ -152,7 +150,7 @@ class pyMongoDB:
             mongo_client.close()
 
         else:
-            print(f'File not found: {json_file}')
+            print(f'[WARN] File not found: {json_file}')
 
 
     # Successfully tested
@@ -400,12 +398,14 @@ def main():
         home_dir  = os.environ['USERPROFILE']
     downloads = os.path.join(home_dir,'Downloads')
 
+    print(mongo.get_all_collections.__doc__)
+
+    """
     credentials = input('user:password:')
     connectionstring = "mongodb+srv://"+credentials+"@cluster0.epl3x.mongodb.net/?retryWrites=true&w=majority"
     json_file = os.path.join(downloads,'Atlas.JupyterNB.Covid19.json')
     mongo.export_json(json_file,connectionstring,'JupyterNB','Covid19')
-
-    """
+    
     credentials = input('user:password:')
     connectionstring = "mongodb+srv://"+credentials+"@cluster0.epl3x.mongodb.net/?retryWrites=true&w=majority"
 
