@@ -1,0 +1,33 @@
+// Select the database to use.
+use('JupyterNB');
+
+// Join Table PoweredOffVMs with Table PatchingHistory
+db.PoweredOffVMs.aggregate([
+    // Join with PatchingHistory
+    {
+      $lookup:{
+          from        : "FailedPatching",  // other table name
+          localField  : "PSComputerName",  // name of PatchingHistory table field
+          foreignField: "PSComputerName",  // name of PoweredOffVMs table field
+          as          : "Failed_Patching"  // alias for userinfo table
+        }
+    },
+    // Deconstructs an array field from the input documents
+    //{ "$unwind": "$Failed_Patching" },
+    // define which fields are you want to fetch
+    // 1 = from PoweredOffVMs
+    {   
+        $project:{
+            _id : 1,
+            PSComputerName : 1,
+            PowerState     : 1,
+            PatchingStatus : "$Failed_Patching.LastPatchRun",
+            PatchingDate   : "$Failed_Patching.LastPatchStatus",
+            UpdateServer   : "$Failed_Patching.UpdateServer",
+            UpdateServerStatus : "$Failed_Patching.UpdateServerStatus",
+            SCCMAgentVersion : "$Failed_Patching.CcmExecVersion",
+            ManagementPoint : "$Failed_Patching.CCCMManagementPoint",
+            CCMCimInstanceStatus : "$Failed_Patching.CCMCimInstanceStatus"
+        } 
+    }
+])
