@@ -398,7 +398,11 @@ def main():
         home_dir  = os.environ['USERPROFILE']
     downloads = os.path.join(home_dir,'Downloads')
 
-    print(mongo.get_all_collections.__doc__)
+    
+    connectionstring = "mongodb://localhost:27017"    
+
+    json_file = os.path.join(downloads, 'MssqlDB.tinu-inventory-2021523-13-00-00.json')
+    mongo.import_json(json_file, connectionstring, 'tinu', 'inventory')
 
     """
     credentials = input('user:password:')
