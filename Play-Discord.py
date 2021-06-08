@@ -1,23 +1,35 @@
 import requests, json
 
-webhook_url     = 'your Webhook address'
-author_name     = 'Python Hook'
-author_avatar   = 'http://panks.me/images/posts/python-logo.png'
-section_title   = '[INFO] Hello python coders'
-fact_title      = "Embeded message"
-fact_message    = "I send this message over a jupyter notebook from my iMac!"
+# Initialize variables
+webhook_url         = 'your webhook address'
+author_name         = 'Python Hook'
+author_avatar       = 'http://img1.wikia.nocookie.net/__cb20111027212138/pichipichipitchadventures/es/images/thumb/f/fd/Captain-Hook-Wallpaper-disney-villains-976702_1024_768.png/456px-Captain-Hook-Wallpaper-disney-villains-976702_1024_768.png'
 
+section_title       = '[INFO] Send with Python'
+section_description = 'Invoke-RestMethod to the WebHookUrl'
+section_color       = 16760576 #FFBF00
+
+fact_title          = "You are boarded"
+fact_message        = "Python Hook boarded your messenger!"
+
+# New section as embed object
 embeds = {
-    'title': section_title, "color": 32767,
-    'fields': [
+    'title'       : section_title,
+    "description" : section_description,
+    "color"       : section_color,
+    'fields'      : [
         {"name" : fact_title, "value" : fact_message, "inline": "false"},
     ],
 }
 
+# Full message
 data = {
-    'username': author_name, 'avatar_url': author_avatar, "embeds": [embeds],
+    'username'  : author_name,
+    'avatar_url': author_avatar,
+    "embeds"    : [embeds],
 }
 
+# Content-Type
 headers = {
     "Content-Type": "application/json"
 }
