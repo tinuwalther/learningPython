@@ -2,7 +2,7 @@ import requests
 
 def send_discord_message(data, date):
     '''Send Discord message'''
-    webhook_url     = 'https://discordapp.com/api/webhooks/851028735331008512/JCYUCmlSfAm_Cl0d6mQxyx45RXZae1xR-OU0FIRA8hp1hoMNQzlHx8dHcVSiKeTjB4Fb'
+    webhook_url     = 'your webhook address'
     author_name     = 'Covid19 Hook'
     author_avatar   = 'https://i2.pngguru.com/preview/189/787/605/covid19-coronavirus-corona-violet-pink-purple-cartoon-magenta-smile-png-clipart-thumbnail.jpg'
     section_title   = '[INFO] COVID-19 Statistics for SWITZERLAND'
