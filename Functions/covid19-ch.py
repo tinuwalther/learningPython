@@ -1,11 +1,13 @@
+# coding=utf-8
 import requests
 
 def send_discord_message(data, date):
     '''Send Discord message'''
-    webhook_url     = 'your webhook address'
-    author_name     = 'Covid19 Hook'
-    author_avatar   = 'https://i2.pngguru.com/preview/189/787/605/covid19-coronavirus-corona-violet-pink-purple-cartoon-magenta-smile-png-clipart-thumbnail.jpg'
-    section_title   = '[INFO] COVID-19 Statistics for SWITZERLAND'
+    webhook_url         = 'your webhook address'
+    author_name         = 'Covid19 Hook'
+    author_avatar       = 'https://i2.pngguru.com/preview/189/787/605/covid19-coronavirus-corona-violet-pink-purple-cartoon-magenta-smile-png-clipart-thumbnail.jpg'
+    section_title       = '[INFO] COVID-19 Statistics for SWITZERLAND'
+    section_description = "Information on the current situation, as of " + date
 
     embeds = {
         "title": section_title, "description": section_description, "color": 32767,
@@ -65,7 +67,8 @@ def get_source_date(url):
 def get_apidata(url, type, last_update):
     '''return JSON'''
     from bson.json_util import loads
-    data_json_url = f"{url}/sources/COVID19{type}_geoRegion.json"
+    #data_json_url = f"{url}/sources/COVID19{type}_geoRegion.json"
+    data_json_url = url + "/sources/COVID19" + type + "_geoRegion.json"
     #print(data_json_url)
     response = requests.get(data_json_url)
     if(response.status_code == 200):
@@ -74,7 +77,7 @@ def get_apidata(url, type, last_update):
         for row in json_data:
             if row["geoRegion"] == "CH":
                 if row["datum"] == last_update:
-                    return "Total: " + str(row["sumTotal"]) + "\nToday: " + str(row["entries_diff_last"])
+                    return "Total:\t" + str(row["sumTotal"]) + "\nToday:\t" + str(row["entries_diff_last"])
 
 if __name__ =="__main__":
     api_url      = "https://www.covid19.admin.ch/api/data"
