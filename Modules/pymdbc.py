@@ -1,3 +1,4 @@
+# coding=utf-8
 # import pymdbc
 # pymdbc.import_json('/Users/Tinu/Downloads/Atlas.JupyterNB.Covid19.json','localhost','tinu','covid19')
 
@@ -71,7 +72,7 @@ def import_csv(csv_file, connectionstring, database, collection):
         mongo_client.close()
 
     else:
-        print(f'[WARN] File not found: {csv_file}')
+        print('[WARN] File not found: ' + csv_file)
 
 
 # Successfully tested
@@ -115,7 +116,7 @@ def import_json(json_file, connectionstring, database, collection):
         mongo_client.close()
 
     else:
-        print(f'[WARN] File not found: {json_file}')
+        print('[WARN] File not found: ' + json_file)
 
 
 # Successfully tested
@@ -151,9 +152,9 @@ def export_json(json_file, connectionstring, database, collection):
 
     check_path = os.path.exists(json_file)
     if(check_path == True):
-        print(f'[INFO] File saved at: {json_file}')
+        print('[INFO] File saved at: ' + json_file)
     else:
-        print(f'[WARN] File not saved: {json_file}')
+        print('[WARN] File not saved: ' + json_file)
 
 
 # Successfully tested
@@ -352,23 +353,3 @@ def left_join_collection(connectionstring, database, left_collection, right_coll
     mongo_client.close()
 
     return mongo_col.aggregate(pipeline)
-
-# Define the help function
-def help():
-    usage = f'''Usage:
-
-    {get_all_databases.__doc__}
-    {get_all_collections.__doc__}
-    {import_csv.__doc__}
-    {import_json.__doc__}
-    {export_json.__doc__}
-    {get_all_documents.__doc__}
-    {insert_one_document.__doc__}
-    {search_for_document.__doc__}
-    {delete_all_documents.__doc__}
-    {drop_collection.__doc__}
-    {drop_database.__doc__}
-    {left_join_collection.__doc__}
-    '''
-    print(usage)
-
