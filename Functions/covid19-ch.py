@@ -34,42 +34,29 @@ def send_discord_message(data, date):
         print("[WARN] Not sent with {0}, response: {1}".format(result.status_code, result.json()))
 
 # Covid19-CH API
-def get_data_version(url):
-    '''return JSON-file'''
-    from bson.json_util import loads
-    response = requests.get(url +"/context")
-    if(response.status_code == 200):
-        html_content = response.content.decode("utf-8")
-        json_data = loads(html_content)
-        if "dataVersion" in json_data:
-            data = json_data["dataVersion"]
-            return data
-        else:
-            print("dataVersion not found")
-    else:
-        print(response.status_code)
-
-def get_source_date(url):
+def get_api_context(url):
     '''return JSON-file'''
     from bson.json_util import loads
     response = requests.get(url +"/context")
     if(response.status_code == 200):
         html_content = response.content.decode('utf-8')
         json_data = loads(html_content)
-        if "sourceDate" in json_data:
-            data = json_data["sourceDate"]
-            return data
+        if "dataVersion" in json_data:
+            dataVersion = json_data["dataVersion"]
         else:
-            print("sourceDate not found")
+            dataVersion = None
+            print("dataVersion not found")
+
+        return dataVersion
+
     else:
         print(response.status_code)
 
-def get_apidata(url, type, last_update):
+
+def get_api_data(url, type, last_update):
     '''return JSON'''
     from bson.json_util import loads
-    #data_json_url = f"{url}/sources/COVID19{type}_geoRegion.json"
     data_json_url = url + "/sources/COVID19" + type + "_geoRegion.json"
-    #print(data_json_url)
     response = requests.get(data_json_url)
     if(response.status_code == 200):
         html_content = response.content.decode("utf-8")
@@ -79,20 +66,44 @@ def get_apidata(url, type, last_update):
                 if row["datum"] == last_update:
                     return "Total:\t" + str(row["sumTotal"]) + "\nToday:\t" + str(row["entries_diff_last"])
 
+
 if __name__ =="__main__":
+    from bson.json_util import loads
     api_url      = "https://www.covid19.admin.ch/api/data"
-    data_version = get_data_version(api_url)
-    source_date  = get_source_date(api_url)
-    last_update = source_date[0:10]
+    data_version = get_api_context(api_url)
+    last_update  = data_version[0:4] + "-" + data_version[4:6] + "-" + data_version[6:8]
 
     data_version_url = api_url + "/" + data_version
     if data_version_url:
-        cases = get_apidata(data_version_url, "Cases", last_update)
-        hosp  = get_apidata(data_version_url, "Hosp", last_update)
-        death = get_apidata(data_version_url, "Death", last_update)
+        cases = get_api_data(data_version_url, "Cases", last_update)
+        hosp  = get_api_data(data_version_url, "Hosp", last_update)
+        death = get_api_data(data_version_url, "Death", last_update)
         discord_data = {
             "Cases": cases,
             "Hospitalisations": hosp,
             "Deaths": death,
         }
+        print(discord_data)
         send_discord_message(discord_data, last_update)
+
+'''
+Traceback (most recent call last):
+  File "/home/tinuwalther/pyscripts/covid19-ch.py", line 83, in <module>
+    data_version = get_data_version(api_url)
+  File "/home/tinuwalther/pyscripts/covid19-ch.py", line 40, in get_data_version
+    response = requests.get(url +"/context")
+  File "/usr/local/lib/python2.7/dist-packages/requests/api.py", line 75, in get
+    return request('get', url, params=params, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/requests/api.py", line 60, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/requests/sessions.py", line 533, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/requests/sessions.py", line 646, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/requests/adapters.py", line 510, in send
+    raise ProxyError(e, request=request)
+requests.exceptions.ProxyError: HTTPSConnectionPool(host='www.covid19.admin.ch', 
+port=443): Max retries exceeded with url: /api/data/context (Caused by ProxyError('Cannot connect to proxy.', error('Tunnel connection failed: 403 Forbidden',)))
+
+2021-06-16 11:45:41 -- Completed task, took 5.15 seconds, return code was 1.
+'''
