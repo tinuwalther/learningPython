@@ -67,13 +67,25 @@ def get_api_data(url, type, last_update):
                     return "Total:\t" + str(row["sumTotal"]) + "\nToday:\t" + str(row["entries_diff_last"])
 
 
+def add_document(connectionstring, mongodatabase, collection, document):
+    '''Connect to MongoDB and add a document'''
+    import pymongo
+    mongo_client = pymongo.MongoClient(connectionstring)
+    mongo_db     = mongo_client[mongodatabase]
+    mongo_col    = mongo_db[collection]
+    mongo_col.insert_one(document)
+    mongo_client.close()
+
+
 if __name__ =="__main__":
-    import datetime as dt
+    import datetime as dt, time
     api_url      = "https://www.covid19.admin.ch/api/data"
     data_version = get_api_context(api_url)
     last_update  = data_version[0:4] + "-" + data_version[4:6] + "-" + data_version[6:8]
     dt_format    = "%Y-%m-%d"
-    dt_weekday   = dt.datetime.strptime(last_update, dt_format).strftime('%A')
+    dt_today     = dt.datetime.today()
+    str_today    = dt_today.strftime(dt_format)
+    dt_weekday   = dt.datetime.strptime(str_today, dt_format).strftime('%A')
     if dt_weekday == 'Saturday' or dt_weekday == 'Sunday':
         #print('Its weekend: ' + dt_weekday)
         pass
@@ -89,6 +101,19 @@ if __name__ =="__main__":
                 "Hospitalisations": hosp,
                 "Deaths": death,
             }
-            print(discord_data)
-            #send_discord_message(discord_data, last_update)
-    
+            #print(discord_data)
+            send_discord_message(discord_data, last_update)
+
+            #Adapt data for MongoDB
+            connectionstring = "mongodb+srv://tinu:10J9nSVN3XN7srEgYEKI@cluster0.epl3x.mongodb.net/?retryWrites=true&w=majority"        
+            dt_last_update   = dt.datetime.strptime(last_update, dt_format)
+            dt_format        = "%d.%m.%Y"
+            str_last_update  = dt_last_update.strftime(dt_format)
+            document = {
+                "Datum"            : str_last_update,
+                "Neue Fälle"       : cases.split("\t")[2],
+                "Hospitalisationen": hosp.split("\t")[2],
+                "Todesfälle"       : death.split("\t")[2],
+            }
+            #print(document)
+            add_document(connectionstring, 'JupyterNB', 'Covid19', document)
