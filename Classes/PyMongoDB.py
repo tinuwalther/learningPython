@@ -398,13 +398,34 @@ def main():
         home_dir  = os.environ['USERPROFILE']
     downloads = os.path.join(home_dir,'Downloads')
 
-    connectionstring = "mongodb://localhost:27017"    
+    #connectionstring = "mongodb://localhost:27017"    
+    credentials = input('user:password:')
+    connectionstring = "mongodb+srv://"+credentials+"@cluster0.epl3x.mongodb.net/?retryWrites=true&w=majority"
+    #mongo.insert_one_document(connectionstring, 'tinu', 'power', { "Period": "Jan 2021 - Juni 2021", "Kilowatt": 0, "CHF": 0 }, True)
+    #mongo.insert_one_document(connectionstring, 'tinu', 'power', { "Period": "Juni 2021 - Dezember 2021", "Kilowatt": 0, "CHF": 0 }, True)
+    
+    import pandas as pd
+    result_of_history = []
+    for doc in mongo.get_all_documents(connectionstring,database="tinu",collection="power"):
+        thisdict = {     
+            'Semester' : (doc['Semester']),
+            'Periode'  : (doc['Period']),
+            'Kilowatt' : int(doc['Kilowatt']),
+            'CHF'      : float(doc['CHF']),
+        }
+        result_of_history.append(thisdict)
 
-    json_file = os.path.join(downloads, 'MongoDB.Atlas.tinu.Covid19.json')
-    #mongo.import_json(json_file, connectionstring, 'tinu', 'covid19')
-    #mongo.drop_collection(connectionstring, 'tinu', 'inventory')
-
+    ## Create a data frame set and print out
+    df = pd.DataFrame(result_of_history)
+    print(df)    
+    
     """
+    json_file = os.path.join(downloads, 'MongoDB.Atlas.tinu.inventory.json')
+    json_file = os.path.join(downloads, 'MongoDB.Atlas.tinu.power.json')
+
+    mongo.import_json(json_file, connectionstring, 'tinu', 'covid19')
+    mongo.drop_collection(connectionstring, 'tinu', 'inventory')
+
     credentials = input('user:password:')
     connectionstring = "mongodb+srv://"+credentials+"@cluster0.epl3x.mongodb.net/?retryWrites=true&w=majority"
     json_file = os.path.join(downloads,'Atlas.JupyterNB.Covid19.json')
