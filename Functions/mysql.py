@@ -1,7 +1,3 @@
-import warnings
-
-warnings.filterwarnings('ignore', message='The NumPy module was reloaded')
-
 import pymysql, sys, os, json, re, getpass
 import pandas as pd
 from bson.json_util import dumps
@@ -205,8 +201,8 @@ if __name__ =="__main__":
     # Open database connection
     sqlconnection = pymysql.connect(host = sqlhost, user = sqluser, password = sqlusrpw, db = mydb)
 
-    json_file = os.path.join(downloads, 'MysqlDB.tinu.covid19.json')
-    import_json(json_file, sqlconnection, mytable, field1="Date", field2="Cases", field3="Hosp", field4="Death", droptable = True)
+    #json_file = os.path.join(downloads, 'MysqlDB.tinu.covid19.json')
+    #import_json(json_file, sqlconnection, mytable, field1="Date", field2="Cases", field3="Hosp", field4="Death", droptable = True)
     
     #json_file = os.path.join(downloads, 'MongoDB.Atlas.Covid19.json')
     #import_json(json_file, sqlconnection, mytable, field1="Datum", field2="Neue Fälle", field3="Hospitalisationen", field4="Todesfälle", droptable = True)
