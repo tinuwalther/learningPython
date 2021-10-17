@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <title>{{ app_titel }}</title>
+ 
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"  />
+        <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet"  />
+
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"  ></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"  ></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"  ></script> 
+
+</head>
+ 
+<body>
+
+    <!-- Navbar as a heading -->
+    <nav Class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top"  >
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">{{ nav_title }}</a>
+            <button Class="navbar-toggler" data-toggle="collapse" type="button" data-target="#collapsibleNavbar"  >
+                <span Class="navbar-toggler-icon"  ></span>
+            </button>
+            <div Id="collapsibleNavbar" Class="collapse navbar-collapse"  >
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/csv">CSV</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/json">JSON</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/mdbc">MongoDB</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="header">
+            <p></p>
+        </div>
+ 
+        <div class="jumbotron p-5 bg-primary text-white">
+            <h1>{{ page_title }}</h1>
+            <hr>
+            <p>{{ page_subtitle }}</p>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+
+        <div class="container-fluid mt-5">
+            {% block input %}{% endblock %}
+            {% block table %}{% endblock %}
+        </div>
+
+        <footer>
+            <nav class="navbar fixed-bottom navbar-light bg-light">
+                <div class="container-fluid">
+                    <a href="#" class="text-dark font-weight-bold">TOP</a>
+                    <p>
+                        Copyright © {{ timestamp.strftime("%Y") }}
+                        <a href="https://tinuwalther.github.io/" target="_blank" class="text-dark">{{ author_name }}</a>
+                    </p>
+                </div>
+            </nav>
+        </footer>
+
+    </body>
+ 
+</html>

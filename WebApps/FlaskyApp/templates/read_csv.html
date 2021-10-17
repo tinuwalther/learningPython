@@ -1,0 +1,33 @@
+{% extends "index.html" %}
+
+{% block table %}
+    <div>
+        <div class="table-responsive">
+            <table class="table table-hover table-sm">
+
+                <thead class="table-dark">
+                    <tr>
+                        {% for item in header%}
+                            <td>
+                                {{item}}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                </thead>
+
+                {% for line in data %}
+                    <tbody>
+                        <tr>
+                            {% for item in line%}
+                            <td>
+                                {{item}}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+{% endblock %}

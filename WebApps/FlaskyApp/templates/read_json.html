@@ -1,0 +1,28 @@
+{% extends "index.html" %}
+
+{% block table %}
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-hover table-sm">
+
+                <thead class="table-dark">
+                    <tr>
+                        {% for key in data[0] %}
+                        <th>{{ key }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+
+                {% for line in data %}
+                <tr>
+                    {% for key in line %}
+                    <td>{{ line[key] }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+{% endblock %}
