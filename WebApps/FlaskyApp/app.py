@@ -7,11 +7,21 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 
 app = Flask(__name__)
-app.config["DEBUG"] = True
+#app.config["DEBUG"] = True
 app.config['UPLOAD_FOLDER'] = "/Volumes/GitRepository/git/internal/Sites/inventory_db/uploads/"
 app.config['APP_TITEL']     = "FlaskyApp"
 app.config['NAV_TITLE']     = "TiFA"
 app.config['PAGE_TITLE']    = "Tinu's "
+
+@app.errorhandler(404)
+def page_not_found(e):
+    timestamp     = datetime.now()
+    app_titel     = app.config['APP_TITEL']
+    nav_title     = app.config['NAV_TITLE']
+    page_title    = app.config['PAGE_TITLE'] + "Flasky App"
+    page_subtitle = "There is something wring in paradise!"
+    return render_template("404.html", **locals()), 404
+
 
 @app.route('/')
 def load_page():
